@@ -5,7 +5,7 @@
 
 Lancer la dockerisation :
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 Accéder à la page web : http://localhost:8080/src

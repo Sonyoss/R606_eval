@@ -26,28 +26,36 @@
     $dbname = getenv("DB_NAME");
 
     // Récupération des données de la BDD
-    try {
-        $p = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $p = null;
+    $connectionException = null;
 
-        $p->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $p->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo 'Erreur lors de la connexion à la BDD : ' . $e->getMessage();
+    // Tentatives de connexion a la BDD pour laisser le temps a la BDD de se construire
+    for ($attempt = 1; $attempt <= 10; $attempt++) {
+        try {
+            $p = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
+            $p->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $p->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            break;
+        } catch (PDOException $e) {
+            $connectionException = $e;
+            usleep(500000);
+        }
+    }
+
+    if ($p === null) {
+        echo 'Erreur lors de la connexion à la BDD : ' . $connectionException?->getMessage();
         exit();
     }
 
     try {
         $d = $p->query("SELECT id,text FROM db_table")->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
-        $p->prepare('CREATE TABLE IF NOT EXISTS db_table (id INT PRIMARY KEY AUTO_INCREMENT, text VARCHAR(100) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4')->execute();
-        $p->prepare('INSERT INTO db_table (text) VALUES (:text)')->execute([':text' => 'azerty']);
-        $p->prepare('INSERT INTO db_table (text) VALUES (:text)')->execute([':text' => 'abcdef']);
-        $p->prepare('INSERT INTO db_table (text) VALUES (:text)')->execute([':text' => 'xyz']);
-        $p->prepare('INSERT INTO db_table (text) VALUES (:text)')->execute([':text' => '123456789']);
-        $d = $p->query('SELECT id,text FROM db_table')->fetchAll(PDO::FETCH_ASSOC);
+        echo 'Erreur lors de la récupération des données : ' . $e->getMessage();
+        exit();
     }
     ?>
 
+<!-- Affichage des données récpérées -->
     <table>
         <thead style="font-weight: bold;">
             <tr>
