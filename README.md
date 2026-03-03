@@ -8,10 +8,8 @@ Lancer la dockerisation :
 docker compose up -d
 ```
 
-Accéder à la page web :
-```
-http://localhost:8080/src
-```
+Accéder à la page web : http://localhost:8080/src
+
 
 ## Tests
 
