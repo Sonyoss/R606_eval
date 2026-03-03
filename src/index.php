@@ -54,15 +54,13 @@
             </tr>
         </thead>
         <tbody>
-            <?php $i = 0;
-            while (true) {
-                if (!key_exists($i, $d))
-                    break; ?>
+            <?php
+            foreach ($d as $val) { ?>
                 <tr>
-                    <td style="border: solid black 1px"><?= $d[$i]['id'] ?></td>
-                    <td style="border: solid black 1px"><?= $d[$i]['text'] ?></td>
+                    <td style="border: solid black 1px"><?= $val['id'] ?></td>
+                    <td style="border: solid black 1px"><?= $val['text'] ?></td>
                 </tr>
-                <?php $i++;
+                <?php
             } ?>
         </tbody>
     </table>
