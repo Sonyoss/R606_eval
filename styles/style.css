@@ -1,0 +1,19 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.red {
+    color: crimson
+}
+
+.cadre {
+    font-weight: bold;
+    border: solid 2px crimson;
+    padding: 5px;
+    width: fit-content;
+}
+
+.tabCell {
+    border: solid black 1px;
+    padding: 3px 5px;
+}
