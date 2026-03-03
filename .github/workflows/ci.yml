@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run PHPStan
+        run: docker run --rm -v "$PWD:/app" -w /app ghcr.io/phpstan/phpstan:2 analyse --no-progress --configuration=phpstan.neon
+
+      - name: Start Docker stack
+        run: docker compose up -d --build
+
+      - name: Wait for DB and run DB connection test
+        run: |
+          for i in {1..20}; do
+            if docker compose exec -T web php tests/db_connection_test.php; then
+              exit 0
+            fi
+            echo "DB pas encore prête, nouvelle tentative..."
+            sleep 3
+          done
+          echo "Le test de connexion BDD a échoué après plusieurs tentatives."
+          exit 1
+
+      - name: Run page load test
+        run: docker compose exec -T web php tests/page_load_test.php
+
+      - name: Stop Docker stack
+        if: always()
+        run: docker compose down -v
