@@ -13,3 +13,9 @@ Accéder à la page web :
 http://localhost:8080/src
 ```
 
+## Tests
+
+```bash
+docker compose exec -T web php tests/db_connection_test.php
+```
+
