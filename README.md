@@ -17,5 +17,6 @@ http://localhost:8080/src
 
 ```bash
 docker compose exec -T web php tests/db_connection_test.php
+docker compose exec -T web php tests/page_load_test.php
 ```
 
