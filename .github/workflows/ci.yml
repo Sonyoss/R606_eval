@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Run PHPStan
+        run: docker run --rm -v "$PWD:/app" -w /app ghcr.io/phpstan/phpstan:2 analyse --no-progress --configuration=phpstan.neon
+
       - name: Start Docker stack
         run: docker compose up -d --build
 
