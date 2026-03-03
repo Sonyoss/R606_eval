@@ -19,11 +19,13 @@
     </header>
 
     <?php
+    // Récupération des variables d'environnements
     $servername = getenv("DB_HOST");
     $username = getenv("DB_USER");
     $password = getenv("DB_PASSWORD");
     $dbname = getenv("DB_NAME");
 
+    // Récupération des données de la BDD
     try {
         $p = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
 

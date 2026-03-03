@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// Test de chargement de la page
+
 $url = getenv('APP_URL') ?: 'http://localhost/src/';
 
 $content = @file_get_contents($url);

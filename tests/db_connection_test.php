@@ -12,6 +12,7 @@ if ($host === '' || $user === '' || $database === '') {
     exit(1);
 }
 
+// Test de la connexion à la BDD
 try {
     $pdo = new PDO(
         "mysql:host={$host};dbname={$database};charset=utf8mb4",
@@ -22,7 +23,6 @@ try {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]
     );
-
     $result = $pdo->query('SELECT 1 AS ok')->fetch();
 
     if (!is_array($result) || (int) ($result['ok'] ?? 0) !== 1) {
